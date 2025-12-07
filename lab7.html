@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №7 - Light</title>
+    <style>
+        /* --- ПРОСТИЙ СТИЛЬ (LIGHT) --- */
+        body {
+            font-family: Arial, sans-serif; /* Стандартний шрифт */
+            background-color: #f4f4f9;      /* Світлий фон */
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .info-bar {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- КАРТКИ --- */
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px; /* Легке заокруглення */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Дуже легка тінь */
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            color: #444;
+        }
+
+        /* --- ПОЛЯ ВВОДУ І ВИВОДУ --- */
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: monospace;
+            background: #fafafa;
+        }
+
+        .result-box {
+            margin-top: 10px;
+            padding: 10px;
+            background: #eef2f5;
+            border: 1px solid #d1d9e6;
+            border-radius: 4px;
+            min-height: 20px;
+            color: #333;
+        }
+
+        /* --- КНОПКИ (ПРОСТІ) --- */
+        button {
+            background-color: #007bff; /* Синій колір */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px; /* Трохи заокруглені кути */
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Темніший синій при наведенні */
+        }
+
+        /* --- ГАЛЕРЕЯ (КВАДРАТИКИ) --- */
+        .gallery {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .box {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: transform 0.2s; /* Плавне збільшення */
+        }
+
+        .blue { background-color: #3498db; }
+        .red { background-color: #e74c3c; }
+        .green { background-color: #2ecc71; }
+
+    </style>
+
+    <script>
+        // Годинник
+        window.onload = function() {
+            setInterval(() => {
+                document.getElementById("timer").innerText = new Date().toLocaleTimeString();
+            }, 1000);
+            document.getElementById("browserInfo").innerText = navigator.userAgent;
+        };
+
+        // Завдання 3: Форми
+        function runTask3() {
+            let forms = document.forms;
+            // Просте виведення
+            document.getElementById("outputTask3").value = `Знайдено форм: ${forms.length}`;
+        }
+
+        // Завдання 4: Ефекти (спрощена логіка)
+        function imgEffect(el, type) {
+            let out = document.getElementById("galleryOutput");
+            
+            if (type === 'over') {
+                el.style.transform = "scale(1.1)"; // Просто трохи збільшуємо
+            } else if (type === 'out') {
+                el.style.transform = "scale(1)";   // Повертаємо назад
+            } else if (type === 'click') {
+                out.innerHTML = `Ви клікнули на: <b>${el.innerText}</b>`;
+                out.style.backgroundColor = "#dff0d8"; // Світло-зелений фон
+            }
+        }
+
+        // Завдання 5: Пошук слів
+        function runTask5() {
+            let text = document.getElementById("inputText5").value;
+            // Видаляємо зайві знаки
+            let words = text.replace(/[^\w\sа-яА-ЯіІїЇєЄ]/g, " ").split(/\s+/);
+            let matches = [];
+
+            words.forEach(word => {
+                if (word.length < 2) return;
+                let w = word.toLowerCase();
+                // Перевірка: починається на "к", закінчується на "о"
+                if ((w.startsWith('к') || w.startsWith('k')) && (w.endsWith('о') || w.endsWith('o'))) {
+                    matches.push(word);
+                }
+            });
+
+            let res = document.getElementById("resultTask5");
+            if (matches.length > 0) {
+                res.innerHTML = `Знайдено (${matches.length}): ${matches.join(", ")}`;
+                res.style.borderLeft = "4px solid green";
+            } else {
+                res.innerHTML = "Нічого не знайдено.";
+                res.style.borderLeft = "4px solid red";
+            }
+        }
+
+        // Завдання 6: Масиви
+        function runTask6() {
+            let arr = [];
+            // Генеруємо числа від -2 до 2
+            for(let i=0; i<15; i++) arr.push(Math.floor(Math.random() * 5) - 2);
+            
+            let zeroCount = 0;
+            let zeroIndices = [];
+            
+            arr.forEach((num, index) => {
+                if (num === 0) {
+                    zeroCount++;
+                    zeroIndices.push(index);
+                }
+            });
+            
+            let out = `Масив: [ ${arr.join(", ")} ]\n`;
+            out += `Кількість нулів: ${zeroCount}\n`;
+            out += `Індекси: ${zeroIndices.join(", ")}`;
+            
+            document.getElementById("outputTask6").value = out;
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Лабораторна робота №7</h1>
+    <div class="info-bar">
+        Час: <span id="timer">00:00:00</span> | <span id="browserInfo">Browser</span>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+            <form name="form1">
+                <h2>1. Кількість форм</h2>
+                <button type="button" onclick="runTask3()">Порахувати форми</button>
+                <textarea id="outputTask3" readonly placeholder="Результат..."></textarea>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>2. Галерея (onMouseOver)</h2>
+            <p>Наведіть мишку на квадрати:</p>
+            
+            <div class="gallery">
+                <div class="box blue" 
+                     onmouseover="imgEffect(this, 'over')" 
+                     onmouseout="imgEffect(this, 'out')"
+                     onclick="imgEffect(this, 'click')">WEB</div>
+
+                <div class="box red" 
+                     onmouseover="imgEffect(this, 'over')" 
+                     onmouseout="imgEffect(this, 'out')"
+                     onclick="imgEffect(this, 'click')">JAVA</div>
+
+                <div class="box green" 
+                     onmouseover="imgEffect(this, 'over')" 
+                     onmouseout="imgEffect(this, 'out')"
+                     onclick="imgEffect(this, 'click')">CSS</div>
+            </div>
+            
+            <div id="galleryOutput" class="result-box">Статус...</div>
+        </div>
+
+        <div class="card">
+            <form name="form2">
+                <h2>3. Пошук слів (к...о)</h2>
+                <textarea id="inputText5">Вчора ми ходили в кіно. Кіт їв какао.</textarea>
+                <button type="button" onclick="runTask5()">Знайти</button>
+                <div id="resultTask5" class="result-box">Тут буде результат</div>
+            </form>
+        </div>
+
+        <div class="card">
+            <form name="form3">
+                <h2>4. Масив і нулі</h2>
+                <button type="button" onclick="runTask6()">Створити масив</button>
+                <textarea id="outputTask6" readonly style="height: 80px;"></textarea>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
